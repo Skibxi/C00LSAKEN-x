@@ -1,0 +1,611 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "C00lsaken",
+   Icon = 119776298368384,
+   LoadingTitle = "Loading...",
+   LoadingSubtitle = "Alm0st L0AD",
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = nil,
+      FileName = "Big Hub"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "noinvitelink",
+      RememberJoins = true
+   },
+   KeySystem = false,
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided",
+      FileName = "Key",
+      SaveKey = true,
+      GrabKeyFromSite = false,
+      Key = {"Hello"}
+   }
+})
+
+local MainTab = Window:CreateTab("Main Mod", 4483362458)
+local GUITab = Window:CreateTab("GUI", 4483362458)
+local FunTab = Window:CreateTab("Fun", 4483362458)
+
+-- Main Tab
+local BackflipButton = MainTab:CreateButton({
+   Name = "Load Backflip GUI",
+   Callback = function()
+      Rayfield:Notify({
+         Title = "⚠️ WARNING",
+         Content = "THIS LITTLE BIT BREAKS ROBLOX'S ANIMATION WALK ONLY BREAKS",
+         Duration = 5,
+         Image = 4483362458
+      })
+      
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/Skibxi/BackflipGoAndFlip/refs/heads/main/N0tAC00lgui"))()
+      
+      Rayfield:Notify({
+         Title = "Backflip GUI Loaded",
+         Content = "The Backflip GUI has been successfully loaded!",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end,
+})
+
+-- Infinite Stamina button
+local InfiniteStaminaButton = MainTab:CreateButton({
+   Name = "Infinite Stamina",
+   Callback = function()
+      local player = game.Players.LocalPlayer
+      local character = player.Character or player.CharacterAdded:Wait()
+
+      local function waitFor(child, name, timeout)
+          return child:WaitForChild(name, timeout or 10)
+      end
+
+      local success, err = pcall(function()
+          local speedMultFolder = waitFor(character, "SpeedMultipliers")
+          local fovMultFolder = waitFor(character, "FOVMultipliers")
+          
+          local speedValue = speedMultFolder:FindFirstChild("Sprinting")
+          local fovValue = fovMultFolder:FindFirstChild("Sprinting")
+
+          if speedValue then speedValue.Value = speedValue.Value end
+          if fovValue then fovValue.Value = fovValue.Value end
+
+          for _, module in pairs(getgc(true)) do
+              if typeof(module) == "table" and rawget(module, "StaminaLoss") then
+                  module.StaminaLoss = 0
+                  print("[✓] Patched StaminaLoss to 0")
+              end
+              if typeof(module) == "table" and rawget(module, "StaminaLossDisabled") then
+                  module.StaminaLossDisabled = true
+                  print("[✓] Disabled StaminaLoss")
+              end
+          end
+      end)
+
+      if not success then
+          Rayfield:Notify({
+             Title = "Stamina Error",
+             Content = "Failed to patch stamina: " .. tostring(err),
+             Duration = 5,
+             Image = 4483362458
+          })
+      else
+          Rayfield:Notify({
+             Title = "Infinite Stamina Activated",
+             Content = "Stamina patch executed successfully!",
+             Duration = 3,
+             Image = 4483362458
+          })
+      end
+   end,
+})
+
+local WalkspeedButton = MainTab:CreateButton({
+   Name = "Walkspeed override and noli controllable for Noli it's not slippery",
+   Callback = function()
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/XQZ-official/XQZscripts/refs/heads/main/VroomVroom.txt"))()
+      
+      Rayfield:Notify({
+         Title = "Walkspeed Override Loaded",
+         Content = "Walkspeed override script has been successfully loaded!",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end,
+})
+
+-- Subspace effect deletion button
+local SubspaceButton = MainTab:CreateButton({
+   Name = "Subspace effect deletion",
+   Callback = function()
+      local success, err = pcall(function()
+          game:GetService("ReplicatedStorage").Modules.StatusEffects.SurvivorExclusive.Subspaced:Destroy()
+      end)
+
+      if not success then
+          Rayfield:Notify({
+             Title = "Subspace Error",
+             Content = "Failed to delete subspace effect: " .. tostring(err),
+             Duration = 5,
+             Image = 4483362458
+          })
+      else
+          Rayfield:Notify({
+             Title = "Subspace Effect Deleted",
+             Content = "Subspace effect has been successfully removed!",
+             Duration = 3,
+             Image = 4483362458
+          })
+      end
+   end,
+})
+
+-- Hitbox Extender Input and Button
+local HitboxValue = 500 -- Default value
+local HitboxInput = MainTab:CreateInput({
+   Name = "Hitbox Reach Value (Max: 500)",
+   PlaceholderText = "Enter reach value",
+   RemoveTextAfterFocusLost = false,
+   Callback = function(Text)
+      local num = tonumber(Text)
+      if num and num >= 1 and num <= 500 then
+         HitboxValue = num
+         Rayfield:Notify({
+            Title = "Hitbox Value Set",
+            Content = "Reach value set to: " .. tostring(num),
+            Duration = 2,
+            Image = 4483362458
+         })
+      else
+         Rayfield:Notify({
+            Title = "Invalid Value",
+            Content = "Please enter a number between 1-500",
+            Duration = 3,
+            Image = 4483362458
+         })
+      end
+   end,
+})
+
+local HitboxButton = MainTab:CreateButton({
+   Name = "Activate Hitbox Extender",
+   Callback = function()
+      getgenv().RV = HitboxValue -- Reach Value
+      getgenv().SP = false
+
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/XQZ-official/XQZscripts/refs/heads/main/HitboxModificationForsaken.txt"))()
+      
+      Rayfield:Notify({
+         Title = "Hitbox Extender Loaded",
+         Content = "Hitbox extender activated with " .. tostring(HitboxValue) .. " reach!",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end,
+})
+
+-- Hitbox Note Label
+local HitboxNote = MainTab:CreateLabel({
+   Name = "*NOTE: 100 Value isn't 100 studs, here's how it works*\n20 = 2 -- default\n50 = 5\n100 = 10\n500 = 50*",
+})
+
+-- ESP Variables
+local GeneratorESPEnabled = false
+local ESPHighlights = {}
+local ESPConnections = {}
+
+-- Generator ESP Toggle
+local GeneratorESPToggle = MainTab:CreateToggle({
+   Name = "Generator ESP",
+   CurrentValue = false,
+   Flag = "GeneratorESP",
+   Callback = function(Value)
+      GeneratorESPEnabled = Value
+      
+      if Value then
+         Rayfield:Notify({
+            Title = "Generator ESP",
+            Content = "Generator ESP enabled!",
+            Duration = 3,
+            Image = 4483362458
+         })
+         startGeneratorESP()
+      else
+         Rayfield:Notify({
+            Title = "Generator ESP",
+            Content = "Generator ESP disabled!",
+            Duration = 3,
+            Image = 4483362458
+         })
+         stopGeneratorESP()
+      end
+   end,
+})
+
+-- Generator ESP Functions
+function startGeneratorESP()
+   local function createGeneratorHighlight(obj)
+      if not obj:FindFirstChildOfClass("Highlight") then
+         local highlight = Instance.new("Highlight")
+         highlight.Name = "GeneratorESP"
+         highlight.Adornee = obj
+         highlight.FillColor = Color3.fromRGB(0, 255, 0)
+         highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+         highlight.FillTransparency = 0.5
+         highlight.OutlineTransparency = 0
+         highlight.Parent = obj
+         
+         ESPHighlights[obj] = highlight
+      end
+   end
+
+   local function scanForGenerators()
+      for _, obj in pairs(game:GetService("Workspace"):GetDescendants()) do
+         if obj:IsA("Model") or obj:IsA("Part") then
+            if string.find(string.lower(obj.Name), "generator") then
+               createGeneratorHighlight(obj)
+            end
+         end
+      end
+   end
+
+   scanForGenerators()
+
+   ESPConnections.generatorLoop = game:GetService("RunService").Heartbeat:Connect(function()
+      if not GeneratorESPEnabled then
+         ESPConnections.generatorLoop:Disconnect()
+         return
+      end
+      
+      for obj, highlight in pairs(ESPHighlights) do
+         if not obj or not obj.Parent then
+            highlight:Destroy()
+            ESPHighlights[obj] = nil
+         end
+      end
+      
+      scanForGenerators()
+   end)
+end
+
+function stopGeneratorESP()
+   if ESPConnections.generatorLoop then
+      ESPConnections.generatorLoop:Disconnect()
+   end
+   
+   for obj, highlight in pairs(ESPHighlights) do
+      if highlight.Name == "GeneratorESP" then
+         highlight:Destroy()
+         ESPHighlights[obj] = nil
+      end
+   end
+end
+
+-- GUI Tab
+local SarynHubButton = GUITab:CreateButton({
+   Name = "Load Saryn Hub",
+   Callback = function()
+      loadstring(game:HttpGet('https://raw.githubusercontent.com/Saiky988/Saryn-Hub/refs/heads/main/Saryn%25Hub%25Beta.lua'))()
+      
+      Rayfield:Notify({
+         Title = "Saryn Hub Loaded",
+         Content = "Saryn Hub GUI has been successfully loaded!",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end,
+})
+
+local NyansakenButton = GUITab:CreateButton({
+   Name = "Load Nyansaken Hub",
+   Callback = function()
+      Rayfield:Notify({
+         Title = "Nyansaken Hub",
+         Content = "Key: NYAN",
+         Duration = 5,
+         Image = 4483362458
+      })
+      
+      loadstring(game:HttpGet('https://github.com/NyansakenHub/NyansakenHub/raw/refs/heads/main/forsakenupdate'))()
+      
+      Rayfield:Notify({
+         Title = "Nyansaken Hub Loaded",
+         Content = "Nyansaken Hub has been successfully loaded!",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end,
+})
+
+local SigmaHubButton = GUITab:CreateButton({
+   Name = "Load Sigma Hub",
+   Callback = function()
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/sigmaboy-sigma-boy/Stamina-Settings-and-ESP/refs/heads/main/SigmasakenLoader2"))()
+      
+      Rayfield:Notify({
+         Title = "Sigma Hub Loaded",
+         Content = "Sigma Hub has been successfully loaded!",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end,
+})
+
+-- Animation variables
+local C00lkidAnimsEnabled = false
+local PizzaAnimsEnabled = false
+local NoliAnimsEnabled = false
+local StalkerAnimsEnabled = false
+local animationConnections = {}
+local stalkerGUI
+
+-- Function to disable all other animations
+local function disableOtherAnims(currentAnim)
+    if currentAnim ~= "c00lkid" and C00lkidAnimsEnabled then
+        C00lkidAnimsToggle:Set(false)
+    end
+    if currentAnim ~= "pizza" and PizzaAnimsEnabled then
+        PizzaAnimsToggle:Set(false)
+    end
+    if currentAnim ~= "noli" and NoliAnimsEnabled then
+        NoliAnimsToggle:Set(false)
+    end
+    if currentAnim ~= "stalker" and StalkerAnimsEnabled then
+        StalkerAnimsToggle:Set(false)
+    end
+end
+
+-- c00lkid anims toggle
+local C00lkidAnimsToggle = FunTab:CreateToggle({
+   Name = "c00lkid anims",
+   CurrentValue = false,
+   Flag = "C00lkidAnims",
+   Callback = function(Value)
+      C00lkidAnimsEnabled = Value
+      
+      if Value then
+         disableOtherAnims("c00lkid")
+         
+         local Players = game:GetService("Players")
+         local RunService = game:GetService("RunService")
+         local player = Players.LocalPlayer
+
+         local function setupAnimations(character)
+             local humanoid = character:WaitForChild("Humanoid")
+
+             local animate = character:FindFirstChild("Animate")
+             if animate then
+                 animate.Disabled = true
+             end
+
+             local idleAnim = Instance.new("Animation")
+             idleAnim.AnimationId = "rbxassetid://18885903667"
+
+             local moveAnim = Instance.new("Animation")
+             moveAnim.AnimationId = "rbxassetid://18885906143"
+
+             local idleTrack = humanoid:LoadAnimation(idleAnim)
+             local moveTrack = humanoid:LoadAnimation(moveAnim)
+
+             idleTrack.Priority = Enum.AnimationPriority.Action
+             moveTrack.Priority = Enum.AnimationPriority.Movement
+
+             idleTrack:Play()
+
+             animationConnections.c00lkidHeartbeat = RunService.Heartbeat:Connect(function()
+                 local speed = humanoid.MoveDirection.Magnitude
+
+                 for _, track in pairs(humanoid:GetPlayingAnimationTracks()) do
+                     if track.Animation.AnimationId ~= idleAnim.AnimationId
+                         and track.Animation.AnimationId ~= moveAnim.AnimationId then
+                         if track.Priority == Enum.AnimationPriority.Core
+                             or track.Name == "idle"
+                             or track.Animation.AnimationId:lower():find("idle") then
+                             track:Stop()
+                         end
+                     end
+                 end
+
+                 if speed > 0.01 then
+                     if not moveTrack.IsPlaying then
+                         idleTrack:Stop()
+                         moveTrack:Play()
+                     end
+                 else
+                     if not idleTrack.IsPlaying then
+                         moveTrack:Stop()
+                         idleTrack:Play()
+                     end
+                 end
+             end)
+         end
+
+         if player.Character then
+             setupAnimations(player.Character)
+         end
+
+         animationConnections.c00lkidCharacterAdded = player.CharacterAdded:Connect(setupAnimations)
+         
+         Rayfield:Notify({
+            Title = "c00lkid anims",
+            Content = "Custom animations enabled!",
+            Duration = 3,
+            Image = 4483362458
+         })
+      else
+         if animationConnections.c00lkidHeartbeat then
+            animationConnections.c00lkidHeartbeat:Disconnect()
+            animationConnections.c00lkidHeartbeat = nil
+         end
+         if animationConnections.c00lkidCharacterAdded then
+            animationConnections.c00lkidCharacterAdded:Disconnect()
+            animationConnections.c00lkidCharacterAdded = nil
+         end
+         
+         -- Re-enable default animations
+         local player = game:GetService("Players").LocalPlayer
+         if player.Character then
+             local animate = player.Character:FindFirstChild("Animate")
+             if animate then
+                 animate.Disabled = false
+             end
+         end
+      end
+   end,
+})
+
+-- c00lkid pizza delivery minion anim toggle
+local PizzaAnimsToggle = FunTab:CreateToggle({
+   Name = "c00lkid pizza delivery minion anim",
+   CurrentValue = false,
+   Flag = "PizzaAnims",
+   Callback = function(Value)
+      PizzaAnimsEnabled = Value
+      
+      if Value then
+         disableOtherAnims("pizza")
+         
+         local Players = game:GetService("Players")
+         local RunService = game:GetService("RunService")
+         local player = Players.LocalPlayer
+
+         local function setupAnimations(character)
+             local humanoid = character:WaitForChild("Humanoid")
+
+             local animate = character:FindFirstChild("Animate")
+             if animate then
+                 animate.Disabled = true
+             end
+
+             local idleAnim = Instance.new("Animation")
+             idleAnim.AnimationId = "rbxassetid://18886066950"
+
+             local moveAnim = Instance.new("Animation")
+             moveAnim.AnimationId = "rbxassetid://18886064499"
+
+             local idleTrack = humanoid:LoadAnimation(idleAnim)
+             local moveTrack = humanoid:LoadAnimation(moveAnim)
+
+             idleTrack.Priority = Enum.AnimationPriority.Action
+             moveTrack.Priority = Enum.AnimationPriority.Movement
+
+             idleTrack:Play()
+
+             animationConnections.pizzaHeartbeat = RunService.Heartbeat:Connect(function()
+                 local speed = humanoid.MoveDirection.Magnitude
+
+                 for _, track in pairs(humanoid:GetPlayingAnimationTracks()) do
+                     if track.Animation.AnimationId ~= idleAnim.AnimationId
+                         and track.Animation.AnimationId ~= moveAnim.AnimationId then
+                         if track.Priority == Enum.AnimationPriority.Core
+                             or track.Name == "idle"
+                             or track.Animation.AnimationId:lower():find("idle") then
+                             track:Stop()
+                         end
+                     end
+                 end
+
+                 if speed > 0.01 then
+                     if not moveTrack.IsPlaying then
+                         idleTrack:Stop()
+                         moveTrack:Play()
+                     end
+                 else
+                     if not idleTrack.IsPlaying then
+                         moveTrack:Stop()
+                         idleTrack:Play()
+                     end
+                 end
+             end)
+         end
+
+         if player.Character then
+             setupAnimations(player.Character)
+         end
+
+         animationConnections.pizzaCharacterAdded = player.CharacterAdded:Connect(setupAnimations)
+         
+         Rayfield:Notify({
+            Title = "Pizza anims",
+            Content = "Pizza delivery animations enabled!",
+            Duration = 3,
+            Image = 4483362458
+         })
+      else
+         if animationConnections.pizzaHeartbeat then
+            animationConnections.pizzaHeartbeat:Disconnect()
+            animationConnections.pizzaHeartbeat = nil
+         end
+         if animationConnections.pizzaCharacterAdded then
+            animationConnections.pizzaCharacterAdded:Disconnect()
+            animationConnections.pizzaCharacterAdded = nil
+         end
+         
+         local player = game:GetService("Players").LocalPlayer
+         if player.Character then
+             local animate = player.Character:FindFirstChild("Animate")
+             if animate then
+                 animate.Disabled = false
+             end
+         end
+      end
+   end,
+})
+
+-- Noli anims toggle
+local NoliAnimsToggle = FunTab:CreateToggle({
+   Name = "Noli anims",
+   CurrentValue = false,
+   Flag = "NoliAnims",
+   Callback = function(Value)
+      NoliAnimsEnabled = Value
+      
+      if Value then
+         disableOtherAnims("noli")
+         
+         local Players = game:GetService("Players")
+         local RunService = game:GetService("RunService")
+         local player = Players.LocalPlayer
+
+         local function setupAnimations(character)
+             local humanoid = character:WaitForChild("Humanoid")
+
+             local animate = character:FindFirstChild("Animate")
+             if animate then
+                 animate.Disabled = true
+             end
+
+             local idleAnim = Instance.new("Animation")
+             idleAnim.AnimationId = "rbxassetid://83465205704188"
+
+             local moveAnim = Instance.new("Animation")
+             moveAnim.AnimationId = "rbxassetid://103292185212679"
+
+             local idleTrack = humanoid:LoadAnimation(idleAnim)
+             local moveTrack = humanoid:LoadAnimation(moveAnim)
+
+             idleTrack.Priority = Enum.AnimationPriority.Action
+             moveTrack.Priority = Enum.AnimationPriority.Movement
+
+             idleTrack:Play()
+
+             animationConnections.noliHeartbeat = RunService.Heartbeat:Connect(function()
+                 local speed = humanoid.MoveDirection.Magnitude
+
+                 for _, track in pairs(humanoid:GetPlayingAnimationTracks()) do
+                     if track.Animation.AnimationId ~= idleAnim.AnimationId
+                         and track.Animation.AnimationId ~= moveAnim.AnimationId then
+                         if track.Priority == Enum.AnimationPriority.Core
+                             or track.Name == "idle"
+                             or track.Animation.AnimationId:lower():find("idle") then
+                             track:Stop()
+                         end
+                     end
+                 end
+
+                 if speed > 0.01 then
+                     if not moveTrack.IsPlay
